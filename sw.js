@@ -1,8 +1,9 @@
 /* Service worker: rede primeiro, cache como reserva (a lista abre mesmo sem sinal no mercado). */
-var CACHE='lista-compras-v1';
-var ARQUIVOS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
+var CACHE='lista-compras-v2';
+var ARQUIVOS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./zxing.min.js'];
 self.addEventListener('install',function(e){
-  e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(ARQUIVOS)}).then(function(){return self.skipWaiting()}));
+  /* guarda cada arquivo separado: se um faltar no GitHub, os outros continuam funcionando */
+  e.waitUntil(caches.open(CACHE).then(function(c){return Promise.all(ARQUIVOS.map(function(u){return c.add(u).catch(function(){})}))}).then(function(){return self.skipWaiting()}));
 });
 self.addEventListener('activate',function(e){
   e.waitUntil(caches.keys().then(function(ks){

@@ -34,7 +34,7 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.35;background:var(--bg);color:var(--text);padding-bottom:150px}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.35;background:var(--bg);color:var(--text);padding-bottom:210px}
 [hidden]{display:none!important}
 button,.btn,.cat-h,.info{touch-action:manipulation}
 button{font-family:inherit}
@@ -116,6 +116,42 @@ h1{font-size:1.6rem;margin:0;letter-spacing:-.5px}
 .toast{position:fixed;left:50%;bottom:130px;transform:translateX(-50%) translateY(20px);background:#222;color:#fff;padding:10px 16px;border-radius:99px;opacity:0;transition:opacity .3s,transform .3s;z-index:60;pointer-events:none;font-size:.9rem;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(108px + env(safe-area-inset-bottom,0px));z-index:25;border:0;border-radius:99px;min-height:54px;padding:0 20px;background:var(--brand);color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(40,30,120,.35);cursor:pointer;touch-action:manipulation}
+.kbd .fab,body.scanning .fab{display:none}
+.scan{position:fixed;left:0;right:0;top:0;bottom:0;z-index:30;background:#000;color:#fff;overflow:hidden}
+.scan video{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;background:#000}
+.scan-frame{position:absolute;left:7%;right:7%;top:42%;height:24%;transform:translateY(-50%);border:3px solid rgba(255,255,255,.92);border-radius:18px;box-shadow:0 0 0 100vmax rgba(0,0,0,.48);pointer-events:none}
+.scan-frame i{position:absolute;left:8px;right:8px;top:50%;height:2px;background:#ff4d4f;border-radius:2px;animation:scanline 1.6s ease-in-out infinite alternate}
+@keyframes scanline{from{top:12%}to{top:88%}}
+@media (prefers-reduced-motion: reduce){.scan-frame i{animation:none}}
+.scan-top{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) 12px max(14px,env(safe-area-inset-left,0px));background:linear-gradient(rgba(0,0,0,.7),transparent)}
+.scan-title{flex:1;text-align:center;font-weight:600;font-size:.95rem;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.scan-btn{width:48px;height:48px;border:0;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:1.2rem;cursor:pointer;flex:none}
+.scan-btn.on{background:#fff;color:#000}
+.scan-msg{position:absolute;left:16px;right:16px;top:30%;padding:16px;border-radius:16px;background:rgba(0,0,0,.72);text-align:center;font-size:1rem;line-height:1.4}
+.scan-bottom{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:10px;padding:40px max(14px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));background:linear-gradient(transparent,rgba(0,0,0,.88) 38%)}
+.scan-last{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.16)}
+.sl-info{flex:1 1 100%;min-width:0;display:flex;flex-direction:column;gap:2px}
+.sl-info b{overflow-wrap:anywhere}
+.sl-info span{font-size:.88rem;opacity:.9;font-variant-numeric:tabular-nums}
+.scan-last .mini{flex:1 1 auto;min-height:44px}
+.scan-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.scan-tot{font-size:.95rem;min-width:0}
+.scan-tot b{font-variant-numeric:tabular-nums}
+body.scanning{overflow:hidden}
+body.scanning .toast{bottom:auto;top:calc(76px + env(safe-area-inset-top,0px))}
+.pick-note{font-size:.85rem}
+#pickName{color:var(--text);font-weight:600;overflow-wrap:anywhere}
+.pick-list{max-height:34vh;overflow-y:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:14px;margin-top:10px}
+.pick-row{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:8px 12px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--text);font-size:1rem;text-align:left;cursor:pointer}
+.pick-row:first-child{border-top:0}
+.pick-row.sug{background:var(--done)}
+.pick-row .pn{flex:1;min-width:0;overflow-wrap:anywhere;font-weight:600}
+.pick-row small{color:var(--muted);font-size:.75rem}
+.pick-row b{color:var(--ok)}
+.pick-add{margin-top:12px}
+.pick-add summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600}
+select.field{-webkit-appearance:menulist;appearance:auto}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
 </head>
@@ -187,6 +223,46 @@ h1{font-size:1.6rem;margin:0;letter-spacing:-.5px}
   <div class="acts"><button class="btn ghost" id="askCancel" type="button">Cancelar</button><button class="btn" id="askOk" type="button">OK</button></div>
 </div></div>
 
+<button class="fab" id="btnScan" type="button" aria-label="Escanear código de barras"><span aria-hidden="true">📷</span> Escanear</button>
+
+<div class="scan" id="scan" hidden>
+  <video id="scanVideo" playsinline muted autoplay></video>
+  <canvas id="scanCanvas" hidden></canvas>
+  <div class="scan-frame" aria-hidden="true"><i></i></div>
+  <div class="scan-top">
+    <button class="scan-btn" id="scanClose" type="button" aria-label="Fechar scanner">✕</button>
+    <div class="scan-title">Aponte para o código de barras</div>
+    <button class="scan-btn" id="scanTorch" type="button" hidden aria-label="Lanterna">🔦</button>
+  </div>
+  <div class="scan-msg" id="scanMsg" hidden></div>
+  <div class="scan-bottom">
+    <div class="scan-last" id="scanLast" hidden>
+      <div class="sl-info"><b id="slName"></b><span id="slDet"></span></div>
+      <button class="mini" id="slUndo" type="button">↩︎ Desfazer</button>
+      <button class="mini" id="slEdit" type="button">✏️ Preço</button>
+      <button class="mini" id="slSwap" type="button">🔁 Item errado</button>
+    </div>
+    <div class="scan-row">
+      <div class="scan-tot">🛒 <b id="scanTotal"></b></div>
+      <button class="btn ghost" id="scanManual" type="button">⌨️ Digitar código</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="dlgPick" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pickH">
+  <h2 id="pickH">📦 Qual item da lista é este?</h2>
+  <p>Código <b id="pickCode"></b><br><span id="pickName"></span></p>
+  <p class="pick-note">O app guarda esse vínculo. Das próximas vezes ele marca o item sozinho.</p>
+  <input class="field" id="pickSearch" type="search" placeholder="Buscar na lista…" autocomplete="off">
+  <div class="pick-list" id="pickList"></div>
+  <details class="pick-add" id="pickAdd"><summary>➕ Não está na lista? Adicionar item novo</summary>
+    <div class="fld"><label for="pickNew">Nome do item</label><input class="field" id="pickNew" type="text" maxlength="60" autocomplete="off"></div>
+    <div class="fld"><label for="pickCat">Categoria</label><select class="field" id="pickCat"></select></div>
+    <button class="btn ok" id="pickAddBtn" type="button" style="width:100%">Adicionar e marcar</button>
+  </details>
+  <div class="acts" style="margin-top:14px"><button class="btn ghost" id="pickCancel" type="button">Ignorar este código</button></div>
+</div></div>
+
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -244,7 +320,8 @@ function sanitize(x){
       items:(Array.isArray(c.items)?c.items:[]).filter(function(i){return i&&typeof i==='object'&&i.name}).map(function(i){
         return {id:String(i.id||uid()),name:String(i.name).slice(0,60),checked:!!i.checked,qty:num(i.qty)||1,price:num(i.price)}})};
   });
-  return {cats:cats,budget:num(x.budget),theme:(x.theme==='dark'||x.theme==='light')?x.theme:null};
+  var codes={};if(x.codes&&typeof x.codes==='object')Object.keys(x.codes).forEach(function(k){if(/^\d{8,14}$/.test(k)&&typeof x.codes[k]==='string')codes[k]=x.codes[k]});
+  return {cats:cats,budget:num(x.budget),theme:(x.theme==='dark'||x.theme==='light')?x.theme:null,codes:codes};
 }
 var S=null,prices={};
 try{S=sanitize(JSON.parse(lsGet(KEY)))}catch(e){S=null}
@@ -346,6 +423,7 @@ function render(){
     $('#budgetTxt').textContent=r>1?'Estourou '+fmt(total-S.budget)+' do orçamento 🚨':'Restam '+fmt(S.budget-total)+' de '+fmt(S.budget);
   }else{$('#budgetBar').style.width='0';$('#budgetTxt').textContent='Total no carrinho'}
   if(focusCat){var el=document.querySelector('[data-add="'+focusCat+'"]');if(el)el.focus();focusCat=null}
+  updScanBar();
 }
 
 /* ---------- item: quantidade e preço ---------- */
@@ -483,6 +561,266 @@ $('#sumNew').onclick=async function(){
   allItems().forEach(function(i){i.checked=false;i.qty=1;i.price=0});
   save();closeModal($('#dlgSum'));render();toast('Nova compra pronta 🔄');
 };
+
+/* ================= SCANNER DE CÓDIGO DE BARRAS ================= */
+var CODE_COOL={},lastCode='',lastRef=null,scanOn=false,scanToken=0,stream=null,track=null,detector=null;
+var zxReader=null,zxLoading=null,zxPrev='',zxCount=0,loopT=0,torchOn=false,wakeLock=null,ac=null;
+var pickCode='',pickTok=0,pickHint='';
+var codes=function(){return S.codes||(S.codes={})};
+
+/* confere o dígito verificador (EAN-8, UPC-A, EAN-13, GTIN-14) para descartar leituras erradas */
+function validCode(c,fmt){
+  c=String(c);
+  if(!/^\d{8,14}$/.test(c))return false;
+  if(fmt==='upc_e'||fmt==='UPC_E')return true;
+  var n=c.length;if(n!==8&&n!==12&&n!==13&&n!==14)return false;
+  var sum=0;for(var i=n-2;i>=0;i--){sum+=(+c.charAt(i))*(((n-2-i)%2===0)?3:1)}
+  return ((10-sum%10)%10)===(+c.charAt(n-1));
+}
+var normCode=function(c){c=String(c);return c.length===12?'0'+c:c};
+function locate(id){for(var a=0;a<S.cats.length;a++){var it=findItem(S.cats[a],id);if(it)return {cat:S.cats[a],item:it}}return null}
+function busyUI(){return !!document.querySelector('.modal:not([hidden])')}
+function buzz(){try{if(navigator.vibrate)navigator.vibrate(60)}catch(e){}}
+function audio(){try{var A=window.AudioContext||window.webkitAudioContext;if(!A)return;ac=ac||new A();if(ac.state==='suspended')ac.resume()}catch(e){}}
+function beep(){try{if(!ac)return;var o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.value=1400;g.gain.value=0.07;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+0.09)}catch(e){}}
+function setScanMsg(t){var m=$('#scanMsg');m.textContent=t||'';m.hidden=!t}
+
+/* barra de baixo do scanner: total do carrinho e último item lido */
+function updScanBar(){
+  var done=allItems().filter(function(i){return i.checked});
+  var tot=done.reduce(function(a,i){return a+sub(i)},0);
+  $('#scanTotal').textContent=fmt(tot)+' · '+done.length+(done.length===1?' item':' itens');
+  var hit=lastRef&&locate(lastRef.iid),card=$('#scanLast');
+  if(hit&&hit.item.checked){
+    card.hidden=false;
+    $('#slName').textContent=emojiFor(hit.item.name)+' '+hit.item.name;
+    $('#slDet').textContent=fmtQty(hit.item.qty)+' × '+fmt(hit.item.price)+' = '+fmt(sub(hit.item));
+  }else card.hidden=true;
+}
+
+/* marca o item lido: repete = +1 na quantidade; sem preço guardado = pergunta o preço */
+function applyScan(cat,item,code){
+  lastCode=code;lastRef={cid:cat.id,iid:item.id};
+  var known=prices[norm(item.name)]||0;
+  if(item.checked){
+    item.qty=Math.round((item.qty+1)*1000)/1000;
+    save();render();toast('➕ '+item.name+' · '+fmtQty(item.qty)+'×');
+  }else if(known>0){
+    item.checked=true;item.qty=1;item.price=known;
+    save();render();toast('✅ '+item.name+' · '+fmt(known));
+  }else{
+    openItemDlg(cat.id,item.id);
+  }
+  updScanBar();
+}
+function undoLast(){
+  var hit=lastRef&&locate(lastRef.iid);if(!hit||!hit.item.checked)return;
+  var i=hit.item;
+  if(i.qty>1)i.qty=Math.round((i.qty-1)*1000)/1000;else{i.checked=false;i.qty=1;i.price=0}
+  save();render();
+}
+function handleCode(raw){
+  var code=normCode(raw),now=Date.now();
+  if((CODE_COOL[code]||0)>now)return;
+  CODE_COOL[code]=now+2200;
+  buzz();beep();
+  var id=codes()[code],hit=id&&locate(id);
+  if(hit)applyScan(hit.cat,hit.item,code);else openPick(code);
+}
+
+/* nome do produto pela base aberta Open Food Facts (precisa de internet; não conhece todos) */
+function lookupName(code){
+  return new Promise(function(res){
+    if(typeof fetch!=='function'||navigator.onLine===false){res(null);return}
+    var ctl=window.AbortController?new AbortController():null,done=false;
+    var to=setTimeout(function(){if(!done){done=true;if(ctl)ctl.abort();res(null)}},6000);
+    var fin=function(v){if(done)return;done=true;clearTimeout(to);res(v)};
+    fetch('https://world.openfoodfacts.org/api/v2/product/'+encodeURIComponent(code)+'.json?fields=product_name,product_name_pt,brands,quantity',ctl?{signal:ctl.signal}:{})
+      .then(function(r){return r.ok?r.json():null})
+      .then(function(j){
+        var p=j&&j.status===1&&j.product;if(!p){fin(null);return}
+        var n=String(p.product_name_pt||p.product_name||'').trim();if(!n){fin(null);return}
+        var b=String(p.brands||'').split(',')[0].trim(),q=String(p.quantity||'').trim();
+        fin({name:n.slice(0,60),full:[n,b,q].filter(Boolean).join(' · ')});
+      }).catch(function(){fin(null)});
+  });
+}
+
+/* sugestão: quantas palavras do item da lista aparecem no nome do produto */
+function itemScore(name,hint){
+  if(!hint)return 0;
+  var h=' '+norm(hint).replace(/[^a-z0-9]+/g,' ')+' ',s=0;
+  norm(name).replace(/[^a-z0-9]+/g,' ').split(' ').forEach(function(t){
+    if(t.length<3)return;
+    if(t.length>4&&t.charAt(t.length-1)==='s')t=t.slice(0,-1);
+    if(h.indexOf(' '+t)>-1)s++;
+  });
+  return s;
+}
+function renderPick(){
+  var q=norm($('#pickSearch').value.trim()),rows=[];
+  S.cats.forEach(function(c){c.items.forEach(function(i){
+    if(q&&norm(i.name).indexOf(q)<0)return;
+    rows.push({c:c,i:i,s:itemScore(i.name,pickHint)});
+  })});
+  rows.sort(function(a,b){return b.s-a.s});
+  $('#pickList').innerHTML=rows.map(function(r){
+    return '<button type="button" class="pick-row'+(r.s>0?' sug':'')+'" data-c="'+esc(r.c.id)+'" data-i="'+esc(r.i.id)+'">'+
+      '<span class="ie">'+emojiFor(r.i.name)+'</span><span class="pn">'+esc(r.i.name)+'</span><small>'+esc(r.c.name)+'</small>'+(r.i.checked?'<b>✓</b>':'')+'</button>';
+  }).join('')||'<div class="empty">Nenhum item com esse nome.</div>';
+}
+function openPick(code){
+  pickCode=code;pickHint='';var tok=++pickTok;
+  $('#pickCode').textContent=code;
+  $('#pickName').textContent='Buscando o nome do produto…';
+  $('#pickSearch').value='';$('#pickNew').value='';
+  $('#pickCat').innerHTML=S.cats.map(function(c){return '<option value="'+esc(c.id)+'">'+esc(c.emoji+' '+c.name)+'</option>'}).join('');
+  $('#pickAdd').open=false;
+  renderPick();openModal($('#dlgPick'));
+  lookupName(code).then(function(r){
+    if(tok!==pickTok||$('#dlgPick').hidden)return;
+    if(r){pickHint=r.full;$('#pickName').textContent=r.full;$('#pickNew').value=r.name}
+    else $('#pickName').textContent='Produto fora da base de nomes. Escolha o item na lista abaixo.';
+    renderPick();
+  });
+}
+function chooseItem(cid,iid){
+  var c=findCat(cid),it=findItem(c,iid);if(!it)return;
+  var code=pickCode;codes()[code]=iid;save();
+  pickTok++;closeModal($('#dlgPick'));
+  CODE_COOL[code]=Date.now()+2200;
+  applyScan(c,it,code);
+}
+$('#pickList').addEventListener('click',function(e){var b=e.target.closest('.pick-row');if(b)chooseItem(b.dataset.c,b.dataset.i)});
+$('#pickSearch').addEventListener('input',renderPick);
+$('#pickAddBtn').onclick=function(){
+  var nm=$('#pickNew').value.trim();if(!nm){toast('Digite o nome do item');return}
+  var c=findCat($('#pickCat').value)||S.cats[0];if(!c){toast('Crie uma categoria antes');return}
+  var it=c.items.filter(function(i){return norm(i.name)===norm(nm)})[0];
+  if(!it){it=mk(nm.slice(0,60));c.items.push(it);save();render()}
+  chooseItem(c.id,it.id);
+};
+$('#pickCancel').onclick=function(){CODE_COOL[pickCode]=Date.now()+10000;pickTok++;closeModal($('#dlgPick'))};
+$('#dlgPick').addEventListener('click',function(e){if(e.target===this)$('#pickCancel').click()});
+
+/* leitura: detector nativo (Chrome Android) ou ZXing local (iPhone e outros) */
+function initZX(){
+  try{
+    var h=new Map();
+    h.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,[ZXing.BarcodeFormat.EAN_13,ZXing.BarcodeFormat.EAN_8,ZXing.BarcodeFormat.UPC_A,ZXing.BarcodeFormat.UPC_E]);
+    h.set(ZXing.DecodeHintType.TRY_HARDER,true);
+    zxReader=new ZXing.MultiFormatReader();zxReader.setHints(h);return true;
+  }catch(e){return false}
+}
+function loadZX(){
+  if(window.ZXing)return Promise.resolve(zxReader?true:initZX());
+  if(zxLoading)return zxLoading;
+  zxLoading=new Promise(function(res){
+    var s=document.createElement('script');s.src='zxing.min.js';
+    s.onload=function(){res(initZX())};s.onerror=function(){zxLoading=null;res(false)};
+    document.head.appendChild(s);
+  });
+  return zxLoading;
+}
+async function readNative(v){
+  var res=await detector.detect(v);
+  for(var k=0;k<res.length;k++){if(validCode(res[k].rawValue,res[k].format))return res[k].rawValue}
+  return null;
+}
+function readZX(v){
+  var vw=v.videoWidth,vh=v.videoHeight;if(!vw||!vh||!zxReader)return null;
+  var sy=Math.round(vh*0.2),sh=Math.round(vh*0.6),sc=Math.min(1,960/vw);
+  var cw=Math.max(1,Math.round(vw*sc)),ch=Math.max(1,Math.round(sh*sc));
+  var cv=$('#scanCanvas');cv.width=cw;cv.height=ch;
+  cv.getContext('2d',{willReadFrequently:true}).drawImage(v,0,sy,vw,sh,0,0,cw,ch);
+  var code=null;
+  try{code=zxReader.decodeWithState(new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(new ZXing.HTMLCanvasElementLuminanceSource(cv)))).getText()}catch(e){code=null}
+  if(!code||!validCode(code)){zxPrev='';zxCount=0;return null}
+  if(code===zxPrev)zxCount++;else{zxPrev=code;zxCount=1}
+  return zxCount>=2?code:null;   /* duas leituras iguais seguidas */
+}
+async function tick(tok){
+  if(tok!==scanToken||!scanOn)return;
+  var v=$('#scanVideo');
+  try{
+    if(v.readyState>=2&&!busyUI()){
+      var code=detector?await readNative(v):readZX(v);
+      if(tok!==scanToken)return;
+      if(code)handleCode(code);
+    }
+  }catch(e){}
+  loopT=setTimeout(function(){tick(tok)},detector?100:180);
+}
+async function startScan(){
+  if(scanOn||!$('#scan').hidden)return;
+  var tok=++scanToken;
+  audio();
+  $('#scan').hidden=false;document.body.classList.add('scanning');
+  setScanMsg('Abrindo a câmera…');updScanBar();
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    setScanMsg('Este navegador não deixa usar a câmera aqui. Abra o link no Chrome (Android) ou no Safari (iPhone), ou toque em "Digitar código".');return;
+  }
+  var s;
+  try{
+    s=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}},audio:false});
+  }catch(e){
+    if(tok!==scanToken)return;
+    var n=e&&e.name;
+    setScanMsg((n==='NotAllowedError'||n==='SecurityError')?'A câmera está bloqueada. Toque no cadeado ao lado do endereço do site, abra Permissões, permita a Câmera e abra o scanner de novo.':
+      (n==='NotFoundError'||n==='OverconstrainedError')?'Não encontrei uma câmera neste aparelho. Use "Digitar código".':
+      'Não consegui abrir a câmera. Feche outros apps que a usam e tente de novo.');
+    return;
+  }
+  if(tok!==scanToken){s.getTracks().forEach(function(t){t.stop()});return}
+  stream=s;track=s.getVideoTracks()[0];
+  var v=$('#scanVideo');v.srcObject=s;
+  try{await v.play()}catch(e){}
+  try{
+    var caps=track.getCapabilities?track.getCapabilities():{};
+    if(caps.torch)$('#scanTorch').hidden=false;
+    if(caps.focusMode&&caps.focusMode.indexOf('continuous')>-1)await track.applyConstraints({advanced:[{focusMode:'continuous'}]});
+  }catch(e){}
+  if(tok!==scanToken)return;
+  detector=null;
+  if('BarcodeDetector' in window){try{detector=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e']})}catch(e){detector=null}}
+  if(!detector){
+    var ok=await loadZX();if(tok!==scanToken)return;
+    if(!ok){setScanMsg('Não consegui carregar o leitor. Toque em "Digitar código".');return}
+  }
+  setScanMsg('');scanOn=true;zxPrev='';zxCount=0;
+  try{if(navigator.wakeLock){var wl=await navigator.wakeLock.request('screen');if(tok!==scanToken){wl.release()}else wakeLock=wl}}catch(e){}
+  tick(tok);
+}
+function stopScan(){
+  scanToken++;scanOn=false;clearTimeout(loopT);
+  if(stream){stream.getTracks().forEach(function(t){try{t.stop()}catch(e){}})}
+  stream=null;track=null;torchOn=false;
+  var v=$('#scanVideo');try{v.pause();v.srcObject=null}catch(e){}
+  try{if(wakeLock&&wakeLock.release)wakeLock.release()}catch(e){}
+  wakeLock=null;
+  var t=$('#scanTorch');t.hidden=true;t.classList.remove('on');
+  $('#scan').hidden=true;document.body.classList.remove('scanning');
+  render();
+}
+$('#btnScan').onclick=startScan;
+$('#scanClose').onclick=stopScan;
+$('#scanTorch').onclick=async function(){
+  if(!track)return;
+  try{torchOn=!torchOn;await track.applyConstraints({advanced:[{torch:torchOn}]});this.classList.toggle('on',torchOn)}
+  catch(e){torchOn=false;toast('Lanterna indisponível')}
+};
+$('#slUndo').onclick=undoLast;
+$('#slEdit').onclick=function(){if(lastRef)openItemDlg(lastRef.cid,lastRef.iid)};
+$('#slSwap').onclick=function(){if(!lastCode)return;var c=lastCode;undoLast();openPick(c)};
+$('#scanManual').onclick=async function(){
+  var r=await ask({title:'Digitar código de barras',msg:'Digite os números que aparecem embaixo das barras.',fields:[{key:'c',label:'Código',value:'',placeholder:'7891000100103',inputmode:'numeric',max:14}],ok:'Buscar'});
+  if(!r)return;
+  var c=String(r.c).replace(/\D/g,'');
+  if(!validCode(c)){toast('Código inválido. Confira os números.');return}
+  handleCode(c);
+};
+document.addEventListener('visibilitychange',function(){if(document.hidden&&!$('#scan').hidden)stopScan()});
+window.addEventListener('pagehide',function(){if(!$('#scan').hidden)stopScan()});
 
 try{render()}catch(err){
   /* dado salvo corrompido: recomeça com a lista padrão em vez de tela em branco */
